@@ -19,7 +19,56 @@ class LawnMap extends HTMLElement {
             maxZoom: 19,
             attribution: '© OpenStreetMap'
         }).addTo(this.map);
+        
+        this.activeMarkers = [];
+        this.shopperMode = true; // Enabled by default for testing
         this.loadMarkers();
+        this.initLasso();
+    }
+
+    initLasso() {
+        this.isDrawing = false;
+        this.lassoPoints = [];
+        this.lassoLayer = L.polyline([], { color: '#26a69a', dashArray: '5, 5' }).addTo(this.map);
+
+        this.map.on('mousedown', (e) => {
+            if (!this.shopperMode) return;
+            this.isDrawing = true;
+            this.lassoPoints = [e.latlng];
+            this.lassoLayer.setLatLngs(this.lassoPoints);
+            this.map.dragging.disable();
+        });
+
+        this.map.on('mousemove', (e) => {
+            if (!this.isDrawing) return;
+            this.lassoPoints.push(e.latlng);
+            this.lassoLayer.setLatLngs(this.lassoPoints);
+        });
+
+        this.map.on('mouseup', () => {
+            if (!this.isDrawing) return;
+            this.isDrawing = false;
+            this.map.dragging.enable();
+            this.finishLasso();
+        });
+    }
+
+    finishLasso() {
+        if (this.lassoPoints.length < 3) {
+            this.lassoLayer.setLatLngs([]);
+            return;
+        }
+        
+        const polygon = L.polygon(this.lassoPoints);
+        const selected = this.activeMarkers.filter(m => {
+            const latlng = m.getLatLng();
+            // Simple bounds check for now
+            return polygon.getBounds().contains(latlng);
+        });
+        
+        console.log('Selected markers:', selected);
+        this.dispatchEvent(new CustomEvent('lasso-complete', { detail: selected, bubbles: true, composed: true }));
+        this.lassoLayer.setLatLngs([]);
     }
 
     async loadMarkers() {
@@ -38,8 +87,9 @@ class LawnMap extends HTMLElement {
             iconSize: [40, 40],
             iconAnchor: [20, 40]
         });
-        L.marker([data.lat, data.lng], { icon }).addTo(this.map)
+        const marker = L.marker([data.lat, data.lng], { icon }).addTo(this.map)
          .bindPopup(`<b>${data.title}</b><br>${data.description}`);
+        this.activeMarkers.push(marker);
     }
 }
 customElements.define('lawn-map', LawnMap);
