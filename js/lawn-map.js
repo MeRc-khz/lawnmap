@@ -29,10 +29,16 @@ class LawnMap extends HTMLElement {
     initLasso() {
         this.isDrawing = false;
         this.lassoPoints = [];
-        this.lassoLayer = L.polyline([], { color: '#26a69a', dashArray: '5, 5' }).addTo(this.map);
+        this.lassoLayer = L.polygon([], { 
+            color: '#26a69a', 
+            weight: 2,
+            dashArray: '5, 5',
+            fillColor: '#26a69a',
+            fillOpacity: 0.1
+        }).addTo(this.map);
 
         this.map.on('mousedown', (e) => {
-            if (!this.shopperMode) return;
+            if (this.currentMode !== 'lasso') return;
             this.isDrawing = true;
             this.lassoPoints = [e.latlng];
             this.lassoLayer.setLatLngs(this.lassoPoints);
@@ -48,7 +54,9 @@ class LawnMap extends HTMLElement {
         this.map.on('mouseup', () => {
             if (!this.isDrawing) return;
             this.isDrawing = false;
-            this.map.dragging.enable();
+            if (this.currentMode === 'lasso') {
+                this.map.dragging.enable();
+            }
             this.finishLasso();
         });
     }
