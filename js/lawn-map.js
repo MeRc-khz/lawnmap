@@ -21,9 +21,52 @@ class LawnMap extends HTMLElement {
         }).addTo(this.map);
         
         this.activeMarkers = [];
-        this.shopperMode = true; // Enabled by default for testing
+        this.currentMode = 'shop';
         this.loadMarkers();
         this.initLasso();
+
+        this.map.on('click', (e) => {
+            if (this.currentMode === 'sell') {
+                this.handleSellerClick(e.latlng);
+            }
+        });
+    }
+
+    setMode(mode) {
+        this.currentMode = mode;
+        
+        // Clear temp markers if exiting sell mode
+        if (mode !== 'sell' && this.tempSellerMarker) {
+            this.map.removeLayer(this.tempSellerMarker);
+            this.tempSellerMarker = null;
+        }
+    }
+
+    handleSellerClick(latlng) {
+        if (this.tempSellerMarker) {
+            this.map.removeLayer(this.tempSellerMarker);
+        }
+
+        this.tempSellerMarker = L.marker(latlng).addTo(this.map);
+        
+        const container = document.createElement('div');
+        container.innerHTML = `
+            <div style="text-align: center;">
+                <p style="margin: 0 0 10px 0; font-weight: bold; font-family: sans-serif;">Confirm Location?</p>
+                <button id="confirm-sell-btn" style="background: #26a69a; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;">Start Listing</button>
+            </div>
+        `;
+
+        container.querySelector('#confirm-sell-btn').onclick = () => {
+            this.map.closePopup();
+            this.dispatchEvent(new CustomEvent('start-sell-flow', { 
+                detail: { latlng },
+                bubbles: true,
+                composed: true
+            }));
+        };
+
+        this.tempSellerMarker.bindPopup(container).openPopup();
     }
 
     initLasso() {

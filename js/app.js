@@ -11,6 +11,13 @@ class AppShell extends HTMLElement {
                 map.setMode(e.detail.mode);
             }
         });
+        this.addEventListener('start-sell-flow', (e) => {
+            const stepper = this.querySelector('sale-stepper');
+            if (stepper) {
+                stepper.style.display = 'flex';
+                stepper.listingLocation = e.detail.latlng;
+            }
+        });
         this.addEventListener('lasso-complete', (e) => {
             const deck = this.querySelector('swipe-deck');
             if (deck) {
