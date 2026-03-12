@@ -1,2 +1,1 @@
-# lawnmap
-map for lawnczar
+# lawnczar
