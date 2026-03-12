@@ -5,6 +5,12 @@ class AppShell extends HTMLElement {
     }
 
     connectedCallback() {
+        this.addEventListener('mode-change', (e) => {
+            const map = this.querySelector('lawn-map');
+            if (map) {
+                map.setMode(e.detail.mode);
+            }
+        });
         this.addEventListener('lasso-complete', (e) => {
             const deck = this.querySelector('swipe-deck');
             if (deck) {
