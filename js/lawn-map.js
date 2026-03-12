@@ -21,18 +21,67 @@ class LawnMap extends HTMLElement {
         }).addTo(this.map);
         
         this.activeMarkers = [];
-        this.shopperMode = true; // Enabled by default for testing
+        this.currentMode = 'shop';
         this.loadMarkers();
         this.initLasso();
+
+        this.map.on('click', (e) => {
+            if (this.currentMode === 'sell') {
+                this.handleSellerClick(e.latlng);
+            }
+        });
+    }
+
+    setMode(mode) {
+        this.currentMode = mode;
+        
+        // Clear temp markers if exiting sell mode
+        if (mode !== 'sell' && this.tempSellerMarker) {
+            this.map.removeLayer(this.tempSellerMarker);
+            this.tempSellerMarker = null;
+        }
+    }
+
+    handleSellerClick(latlng) {
+        if (this.tempSellerMarker) {
+            this.map.removeLayer(this.tempSellerMarker);
+        }
+
+        this.tempSellerMarker = L.marker(latlng).addTo(this.map);
+        
+        const container = document.createElement('div');
+        container.innerHTML = `
+            <div style="text-align: center;">
+                <p style="margin: 0 0 10px 0; font-weight: bold; font-family: sans-serif;">Confirm Location?</p>
+                <button id="confirm-sell-btn" style="background: #26a69a; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;">Start Listing</button>
+            </div>
+        `;
+
+        container.querySelector('#confirm-sell-btn').onclick = () => {
+            this.map.closePopup();
+            this.dispatchEvent(new CustomEvent('start-sell-flow', { 
+                detail: { latlng },
+                bubbles: true,
+                composed: true
+            }));
+        };
+
+        this.tempSellerMarker.bindPopup(container).openPopup();
     }
 
     initLasso() {
         this.isDrawing = false;
         this.lassoPoints = [];
-        this.lassoLayer = L.polyline([], { color: '#26a69a', dashArray: '5, 5' }).addTo(this.map);
+        this.lassoLayer = L.polygon([], { 
+            color: '#26a69a', 
+            weight: 2,
+            dashArray: '5, 5',
+            fillColor: '#26a69a',
+            fillOpacity: 0.1
+        }).addTo(this.map);
 
         this.map.on('mousedown', (e) => {
-            if (!this.shopperMode) return;
+            if (this.currentMode !== 'lasso') return;
             this.isDrawing = true;
             this.lassoPoints = [e.latlng];
             this.lassoLayer.setLatLngs(this.lassoPoints);
@@ -48,7 +97,9 @@ class LawnMap extends HTMLElement {
         this.map.on('mouseup', () => {
             if (!this.isDrawing) return;
             this.isDrawing = false;
-            this.map.dragging.enable();
+            if (this.currentMode === 'lasso') {
+                this.map.dragging.enable();
+            }
             this.finishLasso();
         });
     }

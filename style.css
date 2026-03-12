@@ -18,10 +18,32 @@ body {
 }
 
 app-shell {
-    display: grid;
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     height: 100%;
+    position: relative;
+}
+
+/* Mobile: Toolbar at bottom */
+@media (max-width: 600px) {
+    app-toolbar {
+        order: 2;
+    }
+    lawn-map {
+        order: 1;
+        flex-grow: 1;
+    }
+}
+
+/* Desktop: Toolbar at top */
+@media (min-width: 601px) {
+    app-toolbar {
+        order: 1;
+    }
+    lawn-map {
+        order: 2;
+        flex-grow: 1;
+    }
 }
 
 #map {
