@@ -6,11 +6,14 @@
     <title>lawnczar</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 <body>
     <app-shell>
-        <div id="map"></div>
+        <lawn-map></lawn-map>
     </app-shell>
+    <script src="js/lawn-map.js" type="module"></script>
     <script src="js/app.js" type="module"></script>
 </body>
 </html>
