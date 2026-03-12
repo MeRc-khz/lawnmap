@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "type": "garage",
+    "lat": 51.505,
+    "lng": -0.09,
+    "title": "Weekend Garage Sale",
+    "description": "Furniture and toys."
+  },
+  {
+    "id": "2",
+    "type": "estate",
+    "lat": 51.51,
+    "lng": -0.1,
+    "title": "Mansion Estate Sale",
+    "description": "Antiques and art."
+  },
+  {
+    "id": "3",
+    "type": "truck",
+    "lat": 51.49,
+    "lng": -0.08,
+    "title": "Taco Truck",
+    "description": "Best street tacos in town!"
+  }
+]

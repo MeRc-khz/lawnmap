@@ -19,6 +19,27 @@ class LawnMap extends HTMLElement {
             maxZoom: 19,
             attribution: '© OpenStreetMap'
         }).addTo(this.map);
+        this.loadMarkers();
+    }
+
+    async loadMarkers() {
+        try {
+            const response = await fetch('data/markers.json');
+            const markers = await response.json();
+            markers.forEach(m => this.addMarker(m));
+        } catch (error) {
+            console.error('Error loading markers:', error);
+        }
+    }
+
+    addMarker(data) {
+        const icon = L.icon({
+            iconUrl: `assets/marker-${data.type === 'garage' ? 'sign' : data.type}.svg`,
+            iconSize: [40, 40],
+            iconAnchor: [20, 40]
+        });
+        L.marker([data.lat, data.lng], { icon }).addTo(this.map)
+         .bindPopup(`<b>${data.title}</b><br>${data.description}`);
     }
 }
 customElements.define('lawn-map', LawnMap);
