@@ -3,6 +3,15 @@ class AppShell extends HTMLElement {
         super();
         console.log('lawnczar app shell initialized');
     }
+
+    connectedCallback() {
+        this.addEventListener('lasso-complete', (e) => {
+            const deck = this.querySelector('swipe-deck');
+            if (deck) {
+                deck.setCards(e.detail);
+            }
+        });
+    }
 }
 customElements.define('app-shell', AppShell);
 

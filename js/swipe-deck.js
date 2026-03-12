@@ -1,0 +1,87 @@
+class SwipeDeck extends HTMLElement {
+    constructor() {
+        super();
+        this.cards = [];
+        this.attachShadow({ mode: 'open' });
+        this.render();
+    }
+
+    setCards(markers) {
+        // Extract data from Leaflet markers
+        this.cards = markers.map(m => {
+            const popup = m.getPopup().getContent();
+            const div = document.createElement('div');
+            div.innerHTML = popup;
+            return {
+                title: div.querySelector('b').innerText,
+                description: div.innerText.replace(div.querySelector('b').innerText, '').trim()
+            };
+        });
+        this.render();
+    }
+
+    swipe(direction) {
+        const card = this.cards.pop();
+        if (direction === 'right') {
+            console.log('Keeping:', card.title);
+            this.dispatchEvent(new CustomEvent('keep-sale', { detail: card, bubbles: true, composed: true }));
+        } else {
+            console.log('Discarding:', card.title);
+        }
+        this.render();
+    }
+
+    render() {
+        this.shadowRoot.innerHTML = `
+            <style>
+                :host {
+                    display: ${this.cards.length ? 'flex' : 'none'};
+                    position: absolute; top: 50%; left: 50%; 
+                    transform: translate(-50%, -50%);
+                    width: 90%; max-width: 320px; 
+                    height: 450px; z-index: 200;
+                    font-family: sans-serif;
+                }
+                .card {
+                    background: white; border-radius: 16px; 
+                    padding: 24px; box-shadow: 0 15px 45px rgba(0,0,0,0.15); 
+                    width: 100%; display: flex; flex-direction: column;
+                    justify-content: space-between;
+                    border: 1px solid #eee;
+                }
+                .actions { display: flex; justify-content: space-around; margin-top: 24px; gap: 15px; }
+                button { 
+                    flex: 1; border: none; padding: 14px; border-radius: 8px; 
+                    cursor: pointer; font-weight: bold; font-size: 16px;
+                }
+                .btn-discard { background: #ffebee; color: #f44336; }
+                .btn-keep { background: #e8f5e9; color: #4caf50; }
+                h2 { color: #455a64; margin: 0 0 10px 0; }
+                p { color: #666; font-size: 16px; line-height: 1.5; flex-grow: 1; }
+                .badge { 
+                    background: #eee; padding: 4px 8px; border-radius: 4px; 
+                    font-size: 12px; display: inline-block; margin-bottom: 10px;
+                }
+            </style>
+            ${this.cards.length ? `
+                <div class="card">
+                    <div>
+                        <div class="badge">SALE DISCOVERY</div>
+                        <h2>${this.cards[this.cards.length - 1].title}</h2>
+                        <p>${this.cards[this.cards.length - 1].description}</p>
+                    </div>
+                    <div class="actions">
+                        <button class="btn-discard" id="discard">❌ No</button>
+                        <button class="btn-keep" id="keep">✅ Yes</button>
+                    </div>
+                </div>
+            ` : ''}
+        `;
+
+        if (this.cards.length) {
+            this.shadowRoot.querySelector('#discard').onclick = () => this.swipe('left');
+            this.shadowRoot.querySelector('#keep').onclick = () => this.swipe('right');
+        }
+    }
+}
+customElements.define('swipe-deck', SwipeDeck);
