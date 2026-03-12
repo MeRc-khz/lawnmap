@@ -1,0 +1,30 @@
+:root {
+    --mint: #26a69a;
+    --mango: #ffb300;
+    --slate: #455a64;
+    --white: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+}
+
+app-shell {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+    height: 100%;
+}
+
+#map {
+    grid-area: 1 / 1;
+    z-index: 1;
+}
