@@ -124,7 +124,7 @@ class LawnMap extends HTMLElement {
 
     async loadMarkers() {
         try {
-            const response = await fetch('data/markers.json');
+            const response = await fetch('/api/markers');
             const markers = await response.json();
             markers.forEach(m => this.addMarker(m));
         } catch (error) {
