@@ -1,6 +1,6 @@
-require('dotenv').config();
-const { MongoClient } = require('mongodb');
-const fs = require('fs');
+import 'dotenv/config';
+import { MongoClient } from 'mongodb';
+import fs from 'fs';
 
 async function seed() {
   const uri = process.env.MONGODB_URI;

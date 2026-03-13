@@ -7,16 +7,24 @@ class SwipeDeck extends HTMLElement {
     }
 
     setCards(markers) {
+        console.log('swipe-deck.setCards called with:', markers.length, 'markers');
+        if (markers.length === 0) return;
+        
         // Extract data from Leaflet markers
         this.cards = markers.map(m => {
             const popup = m.getPopup().getContent();
             const div = document.createElement('div');
             div.innerHTML = popup;
+            const latlng = m.getLatLng();
             return {
+                id: m.options.id,
+                lat: latlng.lat,
+                lng: latlng.lng,
                 title: div.querySelector('b').innerText,
                 description: div.innerText.replace(div.querySelector('b').innerText, '').trim()
             };
         });
+        console.log('Processed cards:', this.cards);
         this.render();
     }
 

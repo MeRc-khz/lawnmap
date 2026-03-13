@@ -23,10 +23,7 @@ class AppToolbar extends HTMLElement {
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    background: white;
-                    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-                    height: 60px;
-                    z-index: 1000;
+                    height: 100%;
                     gap: 10px;
                     padding: 0 10px;
                 }

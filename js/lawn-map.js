@@ -5,8 +5,8 @@ class LawnMap extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
             <style>
-                :host { display: block; height: 100%; }
-                #map-container { height: 100%; }
+                :host { display: block; height: 100%; width: 100%; flex-grow: 1; }
+                #map-container { height: 100%; width: 100%; }
             </style>
             <div id="map-container"></div>
         `;
@@ -107,19 +107,33 @@ class LawnMap extends HTMLElement {
     finishLasso() {
         if (this.lassoPoints.length < 3) {
             this.lassoLayer.setLatLngs([]);
+            this.lassoPoints = [];
             return;
         }
         
-        const polygon = L.polygon(this.lassoPoints);
         const selected = this.activeMarkers.filter(m => {
             const latlng = m.getLatLng();
-            // Simple bounds check for now
-            return polygon.getBounds().contains(latlng);
+            return this.isPointInPolygon(latlng, this.lassoPoints);
         });
         
         console.log('Selected markers:', selected);
         this.dispatchEvent(new CustomEvent('lasso-complete', { detail: selected, bubbles: true, composed: true }));
         this.lassoLayer.setLatLngs([]);
+        this.lassoPoints = [];
+    }
+
+    // Ray-casting algorithm for point-in-polygon
+    isPointInPolygon(point, vs) {
+        var x = point.lat, y = point.lng;
+        var inside = false;
+        for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+            var xi = vs[i].lat, yi = vs[i].lng;
+            var xj = vs[j].lat, yj = vs[j].lng;
+            var intersect = ((yi > y) != (yj > y))
+                && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+            if (intersect) inside = !inside;
+        }
+        return inside;
     }
 
     async loadMarkers() {
@@ -132,13 +146,21 @@ class LawnMap extends HTMLElement {
         }
     }
 
+    openMarkerPopup(markerId) {
+        const marker = this.activeMarkers.find(m => m.options.id === markerId);
+        if (marker) {
+            this.map.setView(marker.getLatLng(), 15);
+            marker.openPopup();
+        }
+    }
+
     addMarker(data) {
         const icon = L.icon({
-            iconUrl: `assets/marker-${data.type === 'garage' ? 'sign' : data.type}.svg`,
+            iconUrl: `assets/marker-${data.type === 'garage' ? 'sign' : (data.type === 'estate' ? 'mansion' : data.type)}.svg`,
             iconSize: [40, 40],
             iconAnchor: [20, 40]
         });
-        const marker = L.marker([data.lat, data.lng], { icon }).addTo(this.map)
+        const marker = L.marker([data.lat, data.lng], { icon, id: data.id || data._id }).addTo(this.map)
          .bindPopup(`<b>${data.title}</b><br>${data.description}`);
         this.activeMarkers.push(marker);
     }

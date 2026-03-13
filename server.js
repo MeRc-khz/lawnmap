@@ -1,7 +1,7 @@
-require('dotenv').config();
-const express = require('express');
-const { MongoClient } = require('mongodb');
-const cors = require('cors');
+import 'dotenv/config';
+import express from 'express';
+import { MongoClient } from 'mongodb';
+import cors from 'cors';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -37,6 +37,10 @@ app.get('/api/markers', async (req, res) => {
 
 // For local development, also serve static files
 app.use(express.static('.'));
+
+app.get('/', (req, res) => {
+  res.sendFile(process.cwd() + '/index.html');
+});
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

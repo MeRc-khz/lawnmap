@@ -14,39 +14,51 @@
 body {
     font-family: 'Inter', sans-serif;
     height: 100vh;
+    width: 100vw;
     overflow: hidden;
+    background: #f0f2f5;
 }
 
 app-shell {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+    display: block;
+    height: 100vh;
+    width: 100vw;
     position: relative;
 }
 
-/* Mobile: Toolbar at bottom */
-@media (max-width: 600px) {
-    app-toolbar {
-        order: 2;
-    }
-    lawn-map {
-        order: 1;
-        flex-grow: 1;
-    }
+lawn-map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
 }
 
-/* Desktop: Toolbar at top */
+app-toolbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: white;
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+}
+
+swipe-deck {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+}
+
+/* Remove desktop top-toolbar for now to simplify */
 @media (min-width: 601px) {
     app-toolbar {
-        order: 1;
+        bottom: auto;
+        top: 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
-    lawn-map {
-        order: 2;
-        flex-grow: 1;
-    }
-}
-
-#map {
-    grid-area: 1 / 1;
-    z-index: 1;
 }
