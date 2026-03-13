@@ -1,0 +1,52 @@
+:root {
+    --mint: #26a69a;
+    --mango: #ffb300;
+    --slate: #455a64;
+    --white: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+}
+
+app-shell {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+}
+
+/* Mobile: Toolbar at bottom */
+@media (max-width: 600px) {
+    app-toolbar {
+        order: 2;
+    }
+    lawn-map {
+        order: 1;
+        flex-grow: 1;
+    }
+}
+
+/* Desktop: Toolbar at top */
+@media (min-width: 601px) {
+    app-toolbar {
+        order: 1;
+    }
+    lawn-map {
+        order: 2;
+        flex-grow: 1;
+    }
+}
+
+#map {
+    grid-area: 1 / 1;
+    z-index: 1;
+}
