@@ -1,10 +1,26 @@
+import { AdManager } from './ad-manager.js';
+
 class AppShell extends HTMLElement {
     constructor() {
         super();
         console.log('lawnczar app shell initialized');
+        this.featuredSales = [];
+        this.loadFallbacks();
+    }
+
+    async loadFallbacks() {
+        try {
+            const response = await fetch('/api/markers');
+            const markers = await response.json();
+            this.featuredSales = markers.filter(m => m.type === 'featured' || m.isAd);
+            console.log('Fallbacks loaded:', this.featuredSales.length);
+        } catch (error) {
+            console.error('Error loading fallbacks:', error);
+        }
     }
 
     connectedCallback() {
+        console.log('AppShell connected');
         this.addEventListener('mode-change', (e) => {
             const map = this.querySelector('lawn-map');
             if (map) {
@@ -23,7 +39,8 @@ class AppShell extends HTMLElement {
             const deck = this.querySelector('swipe-deck');
             if (deck) {
                 console.log('Setting cards in swipe-deck');
-                deck.setCards(e.detail);
+                const finalCards = AdManager.injectAds(e.detail, this.featuredSales);
+                deck.setCards(finalCards);
             } else {
                 console.error('swipe-deck element not found!');
             }
@@ -38,6 +55,12 @@ class AppShell extends HTMLElement {
             const map = this.querySelector('lawn-map');
             if (map) {
                 map.openMarkerPopup(e.detail.markerId);
+            }
+        });
+        this.addEventListener('location-set', (e) => {
+            const map = this.querySelector('lawn-map');
+            if (map) {
+                map.centerOn(e.detail.lat, e.detail.lng);
             }
         });
     }

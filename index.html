@@ -8,15 +8,18 @@
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script id="media-net-ad-script" src="//contextual.media.net/nmedianet.js?cid=8CU6V3X9Z" async></script>
 </head>
 <body>
     <app-shell>
+        <location-prompt></location-prompt>
         <app-toolbar></app-toolbar>
         <lawn-map></lawn-map>
         <sale-stepper></sale-stepper>
         <swipe-deck></swipe-deck>
         <saved-sales></saved-sales>
     </app-shell>
+    <script src="js/location-prompt.js" type="module"></script>
     <script src="js/app-toolbar.js" type="module"></script>
     <script src="js/lawn-map.js" type="module"></script>
     <script src="js/sale-stepper.js" type="module"></script>
