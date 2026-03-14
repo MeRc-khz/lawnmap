@@ -6,6 +6,10 @@ class AppToolbar extends HTMLElement {
         this.render();
     }
 
+    connectedCallback() {
+        console.log('AppToolbar connected');
+    }
+
     setMode(mode) {
         this.currentMode = mode;
         this.render();
@@ -21,31 +25,39 @@ class AppToolbar extends HTMLElement {
             <style>
                 :host {
                     display: flex;
+                    flex-direction: row;
                     justify-content: center;
                     align-items: center;
                     height: 100%;
+                    width: 100%;
                     gap: 10px;
                     padding: 0 10px;
                 }
                 button {
                     flex: 1;
-                    max-width: 120px;
-                    height: 40px;
+                    max-width: 110px;
+                    height: 48px;
                     border: none;
-                    border-radius: 8px;
-                    background: #f5f5f5;
+                    border-radius: 12px;
+                    background: #f8f9fa;
                     color: #455a64;
-                    font-weight: bold;
+                    font-weight: 600;
+                    font-size: 14px;
                     cursor: pointer;
-                    transition: all 0.2s;
+                    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    gap: 5px;
+                    gap: 8px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                }
+                button:active {
+                    transform: scale(0.95);
                 }
                 button.active {
                     background: #26a69a;
                     color: white;
+                    box-shadow: 0 4px 12px rgba(38, 166, 154, 0.3);
                 }
                 @media (min-width: 601px) {
                     :host {

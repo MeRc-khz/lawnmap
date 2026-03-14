@@ -31,19 +31,54 @@ lawn-map {
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 70px; /* Leave space for toolbar */
     z-index: 1;
 }
 
 app-toolbar {
+    display: block;
     position: fixed;
-    bottom: 0;
     left: 0;
     right: 0;
     height: 70px;
     background: white;
-    z-index: 1000;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    z-index: 2000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Desktop: Top */
+@media (min-width: 601px) {
+    app-toolbar {
+        top: 0;
+        border-bottom: 1px solid #eee;
+    }
+    lawn-map {
+        top: 70px;
+        bottom: 0;
+    }
+}
+
+/* Mobile: Bottom */
+@media (max-width: 600px) {
+    app-toolbar {
+        bottom: 0;
+        border-top: 1px solid #eee;
+        padding-bottom: env(safe-area-inset-bottom);
+        height: calc(70px + env(safe-area-inset-bottom));
+    }
+    lawn-map {
+        top: 0;
+        bottom: 70px;
+    }
+}
+
+location-prompt {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30000;
 }
 
 swipe-deck {
@@ -54,11 +89,6 @@ swipe-deck {
     z-index: 10000;
 }
 
-/* Remove desktop top-toolbar for now to simplify */
-@media (min-width: 601px) {
-    app-toolbar {
-        bottom: auto;
-        top: 0;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
+saved-sales {
+    z-index: 15000;
 }
