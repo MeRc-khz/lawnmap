@@ -1,0 +1,13 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="estateG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#64b5f6"/>
+      <stop offset="1" stop-color="#1976d2"/>
+    </linearGradient>
+  </defs>
+  <path d="M14 88 V50 L38 28 V44 L62 24 V44 L86 28 V88 Z" fill="url(#estateG)" stroke="#0d47a1" stroke-width="3" stroke-linejoin="round"/>
+  <rect x="42" y="64" width="16" height="24" rx="2" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2"/>
+  <rect x="22" y="60" width="12" height="12" rx="2" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2"/>
+  <rect x="66" y="60" width="12" height="12" rx="2" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2"/>
+  <path d="M10 88 h80" stroke="#0d47a1" stroke-width="4" stroke-linecap="round"/>
+</svg>

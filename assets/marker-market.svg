@@ -1,0 +1,15 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="marketG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#42a5f5"/>
+      <stop offset="1" stop-color="#1565c0"/>
+    </linearGradient>
+  </defs>
+  <path d="M14 38 L22 20 H78 L86 38" fill="url(#marketG)" stroke="#0d47a1" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M14 38 q9 8 18 0 q9 8 18 0 q9 8 18 0 q9 8 18 0" fill="none" stroke="#0d47a1" stroke-width="3"/>
+  <rect x="20" y="44" width="60" height="40" rx="3" fill="#e3f2fd" stroke="#0d47a1" stroke-width="3"/>
+  <path d="M20 58 h60" stroke="#0d47a1" stroke-width="2.5"/>
+  <path d="M44 64 h12 v20 h-12 Z" fill="url(#marketG)" stroke="#0d47a1" stroke-width="2"/>
+  <rect x="26" y="64" width="10" height="10" rx="1.5" fill="#90caf9" stroke="#0d47a1" stroke-width="1.5"/>
+  <rect x="64" y="64" width="10" height="10" rx="1.5" fill="#90caf9" stroke="#0d47a1" stroke-width="1.5"/>
+</svg>

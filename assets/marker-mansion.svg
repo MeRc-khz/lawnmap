@@ -1,4 +1,15 @@
 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-  <path d="M20 80 V50 L50 20 L80 50 V80 Z" fill="#26a69a"/>
-  <rect x="40" y="60" width="20" height="20" fill="white"/>
+  <defs>
+    <linearGradient id="mansionG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7986cb"/>
+      <stop offset="1" stop-color="#283593"/>
+    </linearGradient>
+  </defs>
+  <path d="M12 86 V46 L30 30 V44 L50 26 V44 L70 30 V46 L88 46 V86 Z" fill="url(#mansionG)" stroke="#1a237e" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M12 46 h76" stroke="#1a237e" stroke-width="2.5"/>
+  <rect x="42" y="64" width="16" height="22" rx="2" fill="#e8eaf6" stroke="#1a237e" stroke-width="2"/>
+  <rect x="20" y="58" width="12" height="10" rx="1.5" fill="#e8eaf6" stroke="#1a237e" stroke-width="2"/>
+  <rect x="68" y="58" width="12" height="10" rx="1.5" fill="#e8eaf6" stroke="#1a237e" stroke-width="2"/>
+  <path d="M38 20 h24 l-3 -10 h-18 Z" fill="#c5cae9" stroke="#1a237e" stroke-width="2"/>
+  <path d="M8 86 h84" stroke="#1a237e" stroke-width="4" stroke-linecap="round"/>
 </svg>
